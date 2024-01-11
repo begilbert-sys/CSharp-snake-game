@@ -75,6 +75,7 @@ class Program {
                 case Direction.Down:
                     snake.ypos += 1;
                     break;
+                // snake must move twice as fast on the x-axis because characters written horizontally are 2x closer than vertically
                 case Direction.Right:
                     snake.xpos += 2;
                     break;
@@ -109,7 +110,6 @@ class Program {
             }
             // keep the cursor up in the corner
             Console.SetCursorPosition(0, 0);
-            Console.Write(apple.xpos + " " + apple.ypos + " " + snake.xpos + " " + snake.ypos);
             System.Threading.Thread.Sleep(delay);
         }
         End:
@@ -179,6 +179,7 @@ class Apple : Object {
     public Apple (char c, ConsoleColor clr) : base(c, clr) {}
     public void setPosition() {
         Random random = new Random();
+        // ensure apple lands on an even-number x position, since the snake only exists on even-numbered x coordinates 
         xpos = 2 * random.Next(2, Console.WindowWidth/2);
         ypos = random.Next(1, Console.WindowHeight);
     }
