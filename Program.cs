@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +7,9 @@ using System.Threading;
 
 class Program {
     static void Main(string[] args) {
+        // window width must be 2x the window height to make a square 
+        Console.WindowHeight = 20;
+        Console.WindowWidth = 40;
         Console.Clear();
         renderWalls();
 
@@ -14,8 +17,8 @@ class Program {
         const int delay = 75;
 
         Snake snake = new Snake('■', ConsoleColor.Green);
-        snake.xpos = 5;
-        snake.ypos = 5;
+        snake.xpos = 10;
+        snake.ypos = 4;
         snake.direction = Direction.Down;
 
         Apple apple = new Apple('■', ConsoleColor.Red);
@@ -73,10 +76,10 @@ class Program {
                     snake.ypos += 1;
                     break;
                 case Direction.Right:
-                    snake.xpos += 1;
+                    snake.xpos += 2;
                     break;
                 case Direction.Left:
-                    snake.xpos -= 1;
+                    snake.xpos -= 2;
                     break;
             }
 
@@ -88,7 +91,7 @@ class Program {
             }
 
             // check if the snake ran into any walls
-            if (snake.xpos <= 1 || snake.xpos >= (Console.WindowWidth- 1) || snake.ypos <= 0 || snake.ypos >= (Console.WindowHeight - 1)) {
+            if (snake.xpos <= 1 || snake.xpos >= (Console.WindowWidth) || snake.ypos <= 0 || snake.ypos >= (Console.WindowHeight)) {
                 break;
             }
 
@@ -106,6 +109,7 @@ class Program {
             }
             // keep the cursor up in the corner
             Console.SetCursorPosition(0, 0);
+            Console.Write(apple.xpos + " " + apple.ypos + " " + snake.xpos + " " + snake.ypos);
             System.Threading.Thread.Sleep(delay);
         }
         End:
@@ -137,7 +141,7 @@ enum Direction {
     Right
 }
 
-// Base class that handles rendering/derendering of all on-screen objects
+// Base class that handles rendering/derendering of all on-screen objects, among other things
 class Object {
     private char character;
     private ConsoleColor color;
@@ -175,8 +179,8 @@ class Apple : Object {
     public Apple (char c, ConsoleColor clr) : base(c, clr) {}
     public void setPosition() {
         Random random = new Random();
-        xpos = random.Next(1, Console.WindowWidth - 1);
-        ypos = random.Next(1, Console.WindowHeight - 1);
+        xpos = 2 * random.Next(2, Console.WindowWidth/2);
+        ypos = random.Next(1, Console.WindowHeight);
     }
 }
 
